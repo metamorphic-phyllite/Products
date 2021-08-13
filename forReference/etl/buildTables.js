@@ -1,4 +1,4 @@
-const pool = require('./db/connection.js');
+const pool = require('../db/connection.js');
 const { products, related, features, productFeatures, styles, photos, skus } = require('./schema.js');
 
 // PRODUCTS
