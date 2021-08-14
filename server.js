@@ -24,12 +24,7 @@ app.get('/products', (req, res) => {
 })
 
 // INDIVIDUAL PRODUCT
-app.get('/products/:id', (req, res) => {
-  let response = getFeatures(req.params.id);
-  console.log('hi', response);
-  res.send(response);
-  // SHOULD RETURN AN OBJECT WITH ALL PRODUCT INFO AS WELL AS A FEATURES KEY THATS AN ARRAY OF OBJECTS FOR EACH FEATURE
-})
+app.get('/products/:id', getFeatures)
 
 // STYLES
 app.get('/products/:id/styles', (req, res) => {

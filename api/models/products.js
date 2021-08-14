@@ -9,6 +9,5 @@ controllers: takes user request (HTTP requests in our case) and tells the servic
 models: represents the database schema
 
 routes : were done using express to connect urls (user's get and post requests) to controllers
-
 helpers: ???
 */
