@@ -6,7 +6,7 @@
 
 
 
-//const pool = require('./db/connection.js');
+// const pool = require('../../db/connection.js').db;
 
 // pool.query("COPY products FROM '/Users/shanimal/Coding/Week 9/CSVs/product.csv' WITH DELIMITER ',' CSV HEADER;", (err, res) => {
 //   console.log('hey', res);
@@ -29,7 +29,7 @@
 //   console.log('hey', res);
 // });
 
-// pool.query("COPY photos FROM '/Users/shanimal/Coding/Week 9/CSVs/photos.csv' WITH DELIMITER ',' CSV HEADER;", (err, res) => {
+// pool.query("COPY photos FROM '/Users/shanimal/Coding/Week 8/CSVs/photos.csv' WITH DELIMITER ',' CSV HEADER;", (err, res) => {
 //   console.log('errrawr', err);
 //   console.log('hey', res);
 // });
@@ -38,6 +38,11 @@
 //   console.log('ferk', err)
 //   console.log('hey', res);
 // });
+
+// pool.query(`ALTER TABLE styles RENAME COLUMN default_style TO "default?"`, (err, res) => {
+//   console.log('derp', err);
+//   console.log('woo', res);
+// })
 
 // pool.query(`ALTER TABLE related
 // ADD CONSTRAINT related_related_product_id_fkey

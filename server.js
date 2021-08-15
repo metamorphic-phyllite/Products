@@ -18,25 +18,16 @@ app.get('/', (req, res) => {
 })
 
 // PRODUCTS
-app.get('/products', (req, res) => {
-  res.send('hi');
-  // SHOULD RETURN AN ARRAY OF OBJECTS THAT ARE EXACTLY THE PRODUCTS TABLE STUFF. ALL OF THEM. EW.
-})
+app.get('/products', getAllProducts)
 
 // INDIVIDUAL PRODUCT
 app.get('/products/:id', getFeatures)
 
 // STYLES
-app.get('/products/:id/styles', (req, res) => {
-  res.send('oooo stylish ');
-  // SHOULD RETURN AN OBJECT WITH PROD ID AND RESULTS EQUAL TO AN ARRAY OF STYLES WITH STYLE INFO, PHOTOS [{}, {}] AND SKUS {SKU: {}, SKU2: {}} ...
-})
+app.get('/products/:id/styles', getStyles)
 
 // RELATED
-app.get('/products/:id/related', (req, res) => {
-  res.send('NICE')
-  // SHOULD RETURN AN ARRAY OF RELATED PRODUCT IDS AND THATS IT
-})
+app.get('/products/:id/related', getRelatedProducts)
 
 // LISTENING
 app.listen(PORT, IP, () => {

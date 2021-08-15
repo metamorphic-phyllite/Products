@@ -1,9 +1,8 @@
-//const app = require('express')();
 const { Pool } = require('pg');
 const { password } = require('../config.js');
-//const { Sequelize } = require('sequelize');
 
 
+// CONNECTION
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
@@ -12,17 +11,18 @@ const pool = new Pool({
   port: 5432
 });
 
-const getAllProducts = () => {
-  pool.query(`SELECT * FROM products`)
-    .then((res) => {
-      console.log('amazing', res.rows);
+// QUERIES
+const getAllProducts = (req, res) => {
+  pool.query(`SELECT * FROM products LIMIT 10`)
+    .then((data) => {
+      res.send(data.rows)
     })
     .catch((err) => {
       console.log('err', err)
     })
 }
 
-// LEFT OUTER JOIN, LEFT BEING PRODUCT INFO AND RIGHT BEING FEATURES WITH THAT PRODUCT ID
+
 const getFeatures = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -31,9 +31,8 @@ const getFeatures = (req, res) => {
   LEFT JOIN features f ON p.id = f.productId
   WHERE p.id = ${id}
   GROUP BY p.id`)
-    .then((response) => {
-      console.log('amazing', response.rows);
-      res.send(response.rows)
+    .then((data) => {
+      res.send(data.rows)
     })
     .catch((err) => {
       console.log('WHERE AM I AHHHH')
@@ -41,13 +40,46 @@ const getFeatures = (req, res) => {
     })
 };
 
-const getStyles = () => {
-  pool.query(``);
+const getStyles = (req, res) => {
+  const id = parseInt(req.params.id);
 
+  pool.query(`SELECT s.id, s.name, s.original_price, s.sale_price, s."default?", array_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos, json_object_agg(k.id, json_build_object('quantity', k.quantity, 'size', k.size)) skus
+  FROM styles s
+  INNER JOIN photos p
+    ON s.id = p.styleid
+  INNER JOIN skus k
+    ON s.id = k.styleid
+  WHERE s.productid = ${id}
+  GROUP BY s.id, p.id
+  ORDER BY s.id`)
+    .then((data) => {
+      res.send({
+        product_id: id,
+        results: data.rows
+      });
+    })
+    .catch((err) => {
+      console.log('ugh', err);
+    })
 }
 
-const getRelatedProducts = () => {
-  pool.query(``)
+const getRelatedProducts = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  pool.query(`SELECT related_product_id
+  FROM related
+  WHERE current_product_id = ${id}`)
+    .then((data) => {
+      console.log(data.rows)
+      let related = [];
+      data.rows.forEach((row) => {
+        related.push(row.related_product_id)
+      })
+      res.send(related);
+    })
+    .catch((err) => {
+      console.log('ferk', err);
+    })
 }
 
 
@@ -59,3 +91,23 @@ module.exports = {
   getRelatedProducts: getRelatedProducts
 }
 //module.export.db = pool;
+
+//s.name, s.original_price, s.sale_price, s.default_style, p.thumbnail_url, p.url, k.id, k.quantity, k.size,
+
+/*
+  pool.query(`SELECT s.id, s.name, s.original_price, s.sale_price, s."default?", array_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos, json_build_object(k.id, json_build_object('quantity', k.quantity, 'size', k.size)) skus
+  FROM (styles s JOIN photos p ON s.id = p.styleid)
+  RIGHT JOIN skus k ON s.id = k.styleid
+  WHERE s.productid = ${id}
+  GROUP BY s.id, k.id, k.quantity, k.size`)
+
+    pool.query(`SELECT s.id, s.name, s.original_price, s.sale_price, s."default?", array_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos, json_build_object(k.id, json_build_object('quantity', k.quantity, 'size', k.size)) skus
+  FROM styles s
+  INNER JOIN photos p
+    ON s.id = p.styleid
+  INNER JOIN skus k
+    ON s.id = k.styleid
+  WHERE s.productid = ${id}
+  GROUP BY s.id, k.id, k.quantity, k.size
+  ORDER BY s.id`)
+*/
