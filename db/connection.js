@@ -50,7 +50,7 @@ const getStyles = (req, res) => {
   INNER JOIN skus k
     ON s.id = k.styleid
   WHERE s.productid = ${id}
-  GROUP BY s.id, p.id
+  GROUP BY s.id
   ORDER BY s.id`)
     .then((data) => {
       res.send({
