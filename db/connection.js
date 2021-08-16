@@ -43,7 +43,7 @@ const getFeatures = (req, res) => {
 const getStyles = (req, res) => {
   const id = parseInt(req.params.id);
 
-  pool.query(`SELECT s.id, s.name, s.original_price, s.sale_price, s."default?", array_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos, json_object_agg(k.id, json_build_object('quantity', k.quantity, 'size', k.size)) skus
+  pool.query(`SELECT DISTINCT ON (s.id) s.id, s.name, s.original_price, s.sale_price, s."default?", array_agg(DISTINCT jsonb_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) photos, jsonb_object_agg(k.id, jsonb_build_object('quantity', k.quantity, 'size', k.size)) skus
   FROM styles s
   INNER JOIN photos p
     ON s.id = p.styleid
