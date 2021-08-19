@@ -13,7 +13,7 @@ module.exports = {
     CREATE TABLE related (
       id int PRIMARY KEY NOT NULL,
       current_product_id int references products(id),
-      related_product_id int references products(id)
+      related_product_id int
     )`,
 
   features: `
@@ -24,13 +24,6 @@ module.exports = {
       value varchar
     )`,
 
-  // productFeatures: `
-  //   CREATE TABLE productFeatures (
-  //     id int,
-  //     productId int references products(id),
-  //     feature_id int references features(id)
-  //   )`,
-
   styles: `
     CREATE TABLE styles (
       id int PRIMARY KEY NOT NULL,
@@ -38,7 +31,7 @@ module.exports = {
       name varchar,
       sale_price varchar,
       original_price varchar,
-      default_style boolean
+      "default?" boolean
     )`,
 
   photos: `

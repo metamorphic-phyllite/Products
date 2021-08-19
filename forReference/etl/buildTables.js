@@ -49,9 +49,3 @@ pool.query('DROP TABLE skus', (err, res) => {
     console.log(err);
   })
 });
-
-//-------INSERTION--------//
-
-// pool.query("COPY products FROM '/Users/shanimal/Coding/Week 9/CSVs/product.csv' WITH DELIMITER ',' CSV HEADER;", (err, res) => {
-//   console.log('hey', res);
-// });
